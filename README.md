@@ -51,7 +51,7 @@ Your site is now live at the S3 website endpoint (shown in the Static website ho
 
 ## Step 4: Set Up CloudFront CDN
 
-CloudFront speeds up your website by caching content at edge locations worldwide.
+CloudFront speeds up your website by caching content at edge locations worldwide. It also serves as a security layer between users and your S3 bucket. By routing all traffic through CloudFront, you can keep your S3 bucket private, enable HTTPS, protect against common DDoS attacks with AWS Shield, and integrate AWS WAF to filter malicious requests before they reach your origin.
 
 ### Step 4.1: Create Distribution
 
@@ -69,7 +69,7 @@ CloudFront speeds up your website by caching content at edge locations worldwide
 
 ### Step 4.2: Update Bucket Policy for CloudFront
 
-CloudFront needs permission to access your S3 bucket.
+Granting access only to CloudFront prevents users from directly accessing your S3 bucket. This ensures all requests pass through CloudFront's caching, security protections, HTTPS termination, and optional AWS WAF rules before reaching your website content.
 
 1. After creating the distribution, go to the **Origins** tab.
 2. Click on your S3 origin name.

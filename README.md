@@ -132,6 +132,7 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
+      # 1. Log into AWS using the official AWS action
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
@@ -139,15 +140,9 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ap-south-1
 
+      # 2. Sync using the built-in AWS CLI (stable and explicit)
       - name: Deploy to S3
-        run: |
-          aws s3 sync . s3://${{ secrets.AWS_S3_BUCKET }} \
-            --follow-symlinks \
-            --exclude '*' \
-            --include '**/*.html' \
-            --include '**/*.css' \
-            --include '**/*.js' \
-            --delete
+        run: aws s3 sync . s3://${{ secrets.AWS_S3_BUCKET }} --follow-symlinks --delete
 ```
 
 > This workflow only uploads `.html`, `.css`, and `.js` files to S3, excluding images, README, and git-related files.

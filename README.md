@@ -1,4 +1,5 @@
 # Deploy Website to AWS S3 + CloudFront with CI/CD
+<img width="1024" height="572" alt="image" src="https://github.com/user-attachments/assets/eb2cdac5-5771-4648-b657-b6944fa16c3a" />
 
 This guide walks you through setting up a static website on AWS S3 with CloudFront CDN and automatic deployments using GitHub Actions.
 

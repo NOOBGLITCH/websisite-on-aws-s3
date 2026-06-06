@@ -19,7 +19,7 @@ This guide walks you through setting up a static website on AWS S3 with CloudFro
 5. Keep all other settings as default for now.
 6. Click **Create bucket**.
 
-![Create S3 Bucket](https://hackmd.io/_uploads/Sk0e47Z-fg.png)
+![Create S3 Bucket](https://imgyx.pages.dev/4VeU3)
 
 ---
 
@@ -32,7 +32,7 @@ This guide walks you through setting up a static website on AWS S3 with CloudFro
 5. Set the **Index document** to `index.html`.
 6. Save the changes.
 
-![Static Website Settings](https://hackmd.io/_uploads/BJfmVQWWGx.png)
+![Static Website Settings](https://imgyx.pages.dev/4VeU3)
 
 ---
 
@@ -45,7 +45,7 @@ This guide walks you through setting up a static website on AWS S3 with CloudFro
 
 Your site is now live at the S3 website endpoint (shown in the Static website hosting section).
 
-![Upload Files](https://hackmd.io/_uploads/HySF47-Wzx.png)
+![Upload Files](https://imgyx.pages.dev/rlH0U)
 
 ---
 
@@ -61,11 +61,11 @@ CloudFront speeds up your website by caching content at edge locations worldwide
 4. Leave the remaining settings as **default** (no changes needed).
 5. Scroll down and click **Create distribution**.
 
-![Create Distribution](https://hackmd.io/_uploads/rk-6NQWbfx.png)
+![Create Distribution](https://imgyx.pages.dev/OF244)
 
-![Select S3 Origin](https://hackmd.io/_uploads/KkxUlSXZbMe.png)
+![Select S3 Origin](https://imgyx.pages.dev/FNTH5)
 
-![Keep default settings](https://hackmd.io/_uploads/SJoNrmbZMe.png)
+![Keep default settings](https://imgyx.pages.dev/FNTH5)
 
 ### Step 4.2: Update Bucket Policy for CloudFront
 
@@ -76,13 +76,13 @@ CloudFront needs permission to access your S3 bucket.
 3. Click **Edit**.
 4. Copy the **Origin policy** that appears.
 
-![Copy Origin Policy](https://hackmd.io/_uploads/HyaJI7bZMg.png)
+![Copy Origin Policy](https://imgyx.pages.dev/4MhIv)
 
 5. Navigate back to your S3 bucket.
 6. Go to **Permissions** → **Bucket policy** → **Edit**.
 7. Paste the copied policy and save.
 
-![Edit Bucket Policy](https://hackmd.io/_uploads/S1yUL7Z-Mg.png)
+![Edit Bucket Policy](https://imgyx.pages.dev/adFgX)
 
 ---
 
@@ -145,13 +145,12 @@ jobs:
         run: aws s3 sync . s3://${{ secrets.AWS_S3_BUCKET }} --follow-symlinks --delete
 ```
 
-> This workflow only uploads `.html`, `.css`, and `.js` files to S3, excluding images, README, and git-related files.
-
 ---
 
 ## Step 6: Test the Setup
 
 1. Commit and push the workflow file to your `main` branch:
+
    ```bash
    git add .github/workflows/deploy.yml
    git commit -m "Add CI/CD deployment workflow"
@@ -169,3 +168,14 @@ jobs:
 - The workflow automatically deploys on every push to `main`.
 - If you need to invalidate the CloudFront cache after deployment, add an invalidation step to the workflow.
 - Ensure your website files are in the root of your repository for the current sync path to work correctly.
+
+## Lessons Learned
+
+- 🔒 Use least-privilege IAM policies instead of full-access policies.
+- 🔑 Prefer OAC (Origin Access Control) over bucket policies for CloudFront access.
+- 🔄 Add CloudFront cache invalidation after each deployment to serve fresh content immediately.
+- 📄 Set `index.html` as the Error document for SPAs to avoid 404s on sub-paths.
+- ☁️ CloudFront distributions take 15+ minutes to deploy — plan ahead when making changes.
+- 🧪 Test the S3 website endpoint directly before attaching CloudFront to isolate issues faster.
+- 🎯 Set proper `Cache-Control` headers on static assets for optimal CDN caching.
+- 👀 Use `aws s3 sync --dryrun` first to preview what will be uploaded.

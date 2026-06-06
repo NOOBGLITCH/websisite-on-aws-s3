@@ -20,6 +20,13 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ap-south-1
 
-      # 2. Sync using the built-in AWS CLI (stable and explicit)
+      # 2. Sync only HTML, CSS, and JS files to S3
       - name: Deploy to S3
-        run: aws s3 sync . s3://${{ secrets.AWS_S3_BUCKET }} --follow-symlinks --delete
+        run: |
+          aws s3 sync . s3://${{ secrets.AWS_S3_BUCKET }} \
+            --follow-symlinks \
+            --exclude '*' \
+            --include '**/*.html' \
+            --include '**/*.css' \
+            --include '**/*.js' \
+            --delete
